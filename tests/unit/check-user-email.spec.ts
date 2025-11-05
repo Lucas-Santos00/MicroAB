@@ -1,8 +1,6 @@
 import { check } from "drizzle-orm/gel-core"
 import validateEmail from "../../src/utils/check-user-email"
 
-type EmailTestCase = [string, string];
-
 const invalidEmail = [
 ['lucas', 'sem "@" e sem domínio'],
 ['lucas@', 'sem domínio após "@"'],
@@ -95,7 +93,7 @@ describe('Check E-mail validation middleware', () => {
     test.each(invalidEmail)(
         'should fail for invalid email: %s (%s)',
         async (email, reason) => {
-            const result = await validateEmail(email);
+            const result = validateEmail(email);
             expect(result.valid).toBe(false);
         }
     );
@@ -103,7 +101,7 @@ describe('Check E-mail validation middleware', () => {
     test.each(validEmails)(
         'should pass for valid email: %s',
         async (email) => {
-            const result = await validateEmail(email);
+            const result = validateEmail(email);
             expect(result.valid).toBe(true);
         }
     );
