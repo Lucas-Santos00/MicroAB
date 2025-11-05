@@ -5,6 +5,7 @@ type ValidationResult = { valid: boolean; errors: string[] };
  * a wide variety of invalid examples (labels, TLDs, IP literals, spacing, etc.).
  * Returns an object with `valid` and an array of `errors` (Portuguese messages).
  */
+
 export function validateEmail(email: string): ValidationResult {
 	const errors: string[] = [];
 	if (typeof email !== 'string') {

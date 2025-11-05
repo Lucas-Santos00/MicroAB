@@ -96,7 +96,6 @@ describe('Check E-mail validation middleware', () => {
         'should fail for invalid email: %s (%s)',
         async (email, reason) => {
             const result = await validateEmail(email);
-            console.log(result, email, reason);
             expect(result.valid).toBe(false);
         }
     );
