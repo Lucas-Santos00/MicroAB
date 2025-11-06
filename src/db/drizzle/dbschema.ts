@@ -1,4 +1,5 @@
 import {
+  uuid,
   date,
   integer,
   pgTable,
@@ -33,7 +34,8 @@ export const testeAccounting = pgTable("teste_accounting", {
 });
 
 export const users = pgTable("users", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity().notNull(),
+  id: integer().primaryKey().generatedAlwaysAsIdentity().notNull().unique(),
+  uuid: uuid().notNull().unique(),
   email: text().notNull().unique(),
   username: text().notNull(),
   password_hash: text().notNull(),
