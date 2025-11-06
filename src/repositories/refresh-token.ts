@@ -1,4 +1,4 @@
-const saveInRedisRefreshToken = async () => {
+const saveInRedisRefreshToken = async (UUID: string) => {
 
     // Inforcações necessárias?
 
