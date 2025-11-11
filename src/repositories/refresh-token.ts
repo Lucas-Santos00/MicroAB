@@ -16,7 +16,11 @@ const saveRefreshToken = async (token_UUID: string, user_UUID: string) => {
 
 const getRefreshToken = async (token_UUID: string) => {
 
-    return await cache_db.hGet('Access_token:' + token_UUID, 'user_uuid');
+    `
+        Retrieve all information associated with a refresh token from Redis by its UUID.
+    `
+
+    return await cache_db.hGetAll(`refresh_token:${token_UUID}`);
 
 }
 
@@ -26,17 +30,21 @@ const delRefreshToken = async (token_UUID: string) => {
         Delete a refresh token from Redis by its UUID.
     `
 
-    return await cache_db.del('refresh_token:' + token_UUID);
+    return await cache_db.del(`refresh_token:${token_UUID}`);
 
 }
 
 const consumeRefreshToken = async (token_UUID: string) => {
 
     `
-        Return and delete the user_uuid associated with the given refresh token UUID.
+        Return and delete the user_uuid associated with the given refresh token UUID, token is elso deleted from Redis.
+        Observation: hGetDel is not supported in node-redis, so we do it in two steps.
     `
 
-    return await cache_db.hGetDel('refresh_token:' + token_UUID, 'user_uuid');
+    const user_UUID = await cache_db.hGet(`refresh_token:${token_UUID}`, 'user_uuid');
+    await cache_db.del(`refresh_token:${token_UUID}`);    
+
+    return user_UUID
 
 }
 

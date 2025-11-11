@@ -18,7 +18,7 @@ const getAccessToken = async (token_UUID: string) => {
 
 
     `
-            Get the user_uuid associated with the given Access token UUID.
+        Get the user_uuid associated with the given Access token UUID.
     `
 
     return await cache_db.hGet('Access_token:' + token_UUID, 'user_uuid');
