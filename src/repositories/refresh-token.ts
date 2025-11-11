@@ -6,11 +6,16 @@ const saveRefreshToken = async (token_UUID: string, user_UUID: string) => {
         Save a refresh token in Redis with the following structure:
         Key: refresh_token:{tokenUUID}
         Value: Hash with field 'user_uuid' set to userUUID
+        TTL: 7 days
     `
 
-    return await cache_db.hSet('refresh_token:' + token_UUID, {
+    const result = await cache_db.hSet(`refresh_token:${token_UUID}`, {
         user_uuid: user_UUID
     });
+
+    await cache_db.expire(`refresh_token:${token_UUID}`, 60 * 60 * 24 * 7); // Set expiration to 7 days
+
+    return result
 
 }
 
