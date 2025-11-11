@@ -1,5 +1,5 @@
 import cache_db from '../../../src/db/redis/redis';
-import { saveRefreshToken, getRefreshToken, delRefreshToken, consumeRefreshToken } from '../../../src/repositories/refresh-token';
+import { saveRefreshToken, getRefreshToken, delRefreshToken, consumeRefreshToken } from '../../../src/repositories/refresh-token-repository';
 
 describe('test refresh-token integration with redis', () => {
 
