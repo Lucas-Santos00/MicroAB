@@ -14,7 +14,7 @@ const invalidPasswords = [
     ['12345678', 'apenas números, sem letras'],
 ]
 
-describe('Validação de Senha de Usuário', () => {
+describe('validate user password', () => {
     
     test.each(invalidPasswords)(
         'deve falhar para senha inválida: %s (%s)',

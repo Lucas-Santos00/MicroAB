@@ -51,7 +51,6 @@ describe('test refresh-token integration with redis', () => {
 
     it('Should return the token with informations saved and delete the token in cacheDB', async () => {
         const tokenData = await consumeRefreshToken(mockTokenInformations.refreshTokenUUID);
-        console.log(tokenData);
         expect(tokenData).toBe(mockTokenInformations.userUUID);
 
         const tokenExistis = await cache_db.hExists(`refresh_token:${mockTokenInformations.refreshTokenUUID}`, 'user_uuid');
