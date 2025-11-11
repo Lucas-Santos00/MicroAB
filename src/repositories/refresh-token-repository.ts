@@ -1,19 +1,18 @@
 import cache_db from "../db/redis/redis";
 
-const saveRefreshToken = async (token_UUID: string, user_UUID: string) => {
+const saveRefreshToken = async (token_UUID: string, token: string) => {
 
     `
-        Save a refresh token in Redis with the following structure:
-        Key: refresh_token:{tokenUUID}
-        Value: Hash with field 'user_uuid' set to userUUID
-        TTL: 7 days
+        Save refresh token in cache with key as token_UUID
+
+        Key: refresh_token:{token_UUID}
+        Value: token (string)
+        Expiration: 7 days
     `
 
-    const result = await cache_db.hSet(`refresh_token:${token_UUID}`, {
-        user_uuid: user_UUID
-    });
+    const result = await cache_db.setEx(`refresh_token:${token_UUID}`, 7 * 24 * 60 * 60, token)
 
-    await cache_db.expire(`refresh_token:${token_UUID}`, 60 * 60 * 24 * 7); // Set expiration to 7 days
+    await cache_db.expire(`refresh_token:${token_UUID}`, 7 * 24 * 60 * 60)
 
     return result
 
@@ -22,34 +21,45 @@ const saveRefreshToken = async (token_UUID: string, user_UUID: string) => {
 const getRefreshToken = async (token_UUID: string) => {
 
     `
-        Retrieve all information associated with a refresh token from Redis by its UUID.
+        Get refresh token from cache using token_UUID
+
+        Key: refresh_token:{token_UUID}
+        Returns: token (string) or null if not found
     `
 
-    return await cache_db.hGetAll(`refresh_token:${token_UUID}`);
+    return await cache_db.get(`refresh_token:${token_UUID}`)
 
 }
 
 const delRefreshToken = async (token_UUID: string) => {
 
     `
-        Delete a refresh token from Redis by its UUID.
+        Delete refresh token from cache using token_UUID
+
+        Key: refresh_token:{token_UUID}
+        Returns: number of keys that were removed
     `
 
-    return await cache_db.del(`refresh_token:${token_UUID}`);
+    return await cache_db.del(`refresh_token:${token_UUID}`)
 
 }
 
 const consumeRefreshToken = async (token_UUID: string) => {
 
     `
-        Return and delete the user_uuid associated with the given refresh token UUID, token is elso deleted from Redis.
-        Observation: hGetDel is not supported in node-redis, so we do it in two steps.
+        Consume (get and delete) refresh token from cache using token_UUID
+
+        Key: refresh_token:{token_UUID}
+        Returns: token (string) or null if not found
     `
 
-    const user_UUID = await cache_db.hGet(`refresh_token:${token_UUID}`, 'user_uuid');
-    await cache_db.del(`refresh_token:${token_UUID}`);    
+    const token = await getRefreshToken(token_UUID)
 
-    return user_UUID
+    if (token) {
+        await delRefreshToken(token_UUID)
+    }
+
+    return token
 
 }
 

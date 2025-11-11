@@ -14,10 +14,12 @@ const generateRefreshToken = (user_uuid: string, secret_key = process.env.REFRES
         - string: The generated JWT refresh token.
     `
 
-    return jwt.sign(
+    const tokenUUID = uuidv7();
+
+    const token = jwt.sign(
         {
             user_uuid: user_uuid,
-            refresh_token_uuid: uuidv7()
+            refresh_token_uuid: tokenUUID
         }, 
         secret_key as string, 
         { 
@@ -26,6 +28,11 @@ const generateRefreshToken = (user_uuid: string, secret_key = process.env.REFRES
             audience: "microservice-users",
             subject: "user-auth"
         });
+
+    return {
+        refreshToken: token,
+        refreshTokenUUID: tokenUUID
+    }
 
 }
 
