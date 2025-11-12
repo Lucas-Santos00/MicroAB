@@ -1,4 +1,4 @@
-import validateUserName from "../../src/utils/check-user-name";
+import validateUserName from "../../../src/utils/check-user-name";
 
 const invalidUserNames: Array<[string, string]> = [
     ['', 'string vazia'],

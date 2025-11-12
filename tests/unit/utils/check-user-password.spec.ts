@@ -1,4 +1,4 @@
-import validatePassword from '../../src/utils/check-user-password';
+import validatePassword from '../../../src/utils/check-user-password';
 
 const invalidPasswords = [
     ['short1', 'menos de 8 caracteres'],

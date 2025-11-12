@@ -46,6 +46,7 @@ export const users = pgTable("users", {
   desactivated: boolean().default(false).notNull(),
 });
 
+/*
 export const refreshTokens = pgTable("refresh_tokens", {
   id: integer().primaryKey().generatedAlwaysAsIdentity().notNull(),
   user_id: integer().notNull().references(() => users.id),
@@ -53,3 +54,4 @@ export const refreshTokens = pgTable("refresh_tokens", {
   expires_at: timestamp().notNull(),
   created_at: timestamp().defaultNow().notNull(),
 });
+*/
