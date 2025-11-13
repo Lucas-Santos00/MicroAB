@@ -2,8 +2,14 @@ import "dotenv/config";
 import fastify from "fastify";
 import routes from "./routes/index";
 
-const app = fastify();
-app.register(routes);
+const app = fastify(/*{ logger: true }*/);
+
+app.setErrorHandler((error, request, reply) => {
+    app.log.error(`Error occurred: ${error.message}`);
+    reply.status(500).send({ error: 'Internal Server Error' });
+});
+
+await routes(app);
 
 const PORT: number = Number(process.env.PORT) || 3000;
 
