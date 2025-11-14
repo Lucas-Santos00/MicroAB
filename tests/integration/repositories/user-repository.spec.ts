@@ -14,6 +14,7 @@ describe('Test user repository with DataBase', () => {
 
     beforeAll(async () => {
         await db.delete(users).where(eq(users.email, mockUser.email)).execute();
+        await db.delete(users).where(eq(users.uuid, mockUser.uuid)).execute();
     });
 
     afterAll(async () => {

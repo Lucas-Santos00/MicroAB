@@ -1,13 +1,37 @@
 import type { LoginReply } from "../../types/login-reply";
-import type { ErrorReply } from "../../types/error-reply";
+import { getUserByEmail } from "../../repositories/user-repository";
+import generateAccesshToken from "../../utils/generate-access-token";
+import generateRefreshToken from "../../utils/generate-refresh-token";
+import { saveAccessToken } from "../../repositories/access-token-repository";
+import { saveRefreshToken } from "../../repositories/refresh-token-repository";
+import * as argon2 from "argon2";
 
-const loginService = async (email: string, password: string): Promise<LoginReply | ErrorReply > => {
+const loginService = async (email: string, password: string): Promise<LoginReply> => {
 
-    // Comparar senha com o hash no banco, buscando o usuário pelo email
-    // Se válido, gerar tokens (access e refresh) e retornar
-    // Se inválido, lançar erro
+    const [user] = await getUserByEmail(email);
 
-    return { code: 200, accessToken: "access_token_example", refreshToken: "refresh_token_example" };
+    if(!user){
+        return { code: 401, error: true, message: 'Invalid credentials', accessToken: '', refreshToken: '' };
+    }
+
+    const isValidPassword = await argon2.verify(user.password_hash, password);
+
+    if(!isValidPassword){
+        return { code: 401, error: true, message: 'Invalid credentials', accessToken: '', refreshToken: '' };
+    }
+
+    const {accessToken, accessTokenUUID} = generateAccesshToken(user.uuid, user.email);
+    const {refreshToken, refreshTokenUUID} = generateRefreshToken(user.uuid, user.email);
+
+    // Inserir tokens no Redis
+    const savedAcessToken = await saveAccessToken(accessTokenUUID, accessToken);
+    const savedRefreshToken = await saveRefreshToken(refreshTokenUUID, refreshToken);
+
+    if(savedAcessToken != 'OK' || savedRefreshToken != 'OK'){
+        return { code: 500, error: true, message: 'Internal server error', accessToken: '', refreshToken: '' };
+    }
+
+    return { code: 200, accessToken, refreshToken };
 
 }
 

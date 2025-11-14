@@ -10,7 +10,7 @@ const saveAccessToken = async (token_UUID: string, token: string) => {
         Expiration: 7 days
     `
 
-    const result = await cache_db.setEx(`access_token:${token_UUID}`, 7 * 24 * 60 * 60, token)
+    const result = await cache_db.set(`access_token:${token_UUID}`, token)
 
     await cache_db.expire(`Access_token:${token_UUID}`, 7 * 24 * 60 * 60)
 

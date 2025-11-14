@@ -1,8 +1,13 @@
 import "dotenv/config";
 import fastify from "fastify";
 import routes from "./routes/index";
+import fastifyCookie, { type FastifyCookieOptions } from "@fastify/cookie";
 
-const app = fastify(/*{ logger: true }*/);
+const app = fastify({ logger: false });
+
+app.register(fastifyCookie, {
+    secret: process.env.APPLICATION_SECRET || 'default'
+} as FastifyCookieOptions)
 
 app.setErrorHandler((error, request, reply) => {
     app.log.error(`Error occurred: ${error.message}`);

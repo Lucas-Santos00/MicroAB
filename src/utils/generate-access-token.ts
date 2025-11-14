@@ -14,10 +14,12 @@ const generateAccesshToken = (user_uuid: string, secret_key = process.env.ACCESS
     - string: The signed JWT access token.
     `
 
-    return jwt.sign(
+    const tokenUUID = uuidv7();
+
+    const token = jwt.sign(
         {
             user_uuid: user_uuid,
-            access_token_uuid: uuidv7()
+            access_token_uuid: tokenUUID
         }, 
         secret_key as string, 
         { 
@@ -26,6 +28,8 @@ const generateAccesshToken = (user_uuid: string, secret_key = process.env.ACCESS
             audience: "microservice-users",
             subject: "user-auth"
         });
+
+    return { accessTokenUUID: tokenUUID, accessToken: token};
 
 }
 
