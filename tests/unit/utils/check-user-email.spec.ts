@@ -1,5 +1,5 @@
 import { check } from "drizzle-orm/gel-core"
-import validateEmail from "../../src/utils/check-user-email"
+import validateEmail from "../../../src/utils/check-user-email"
 
 const invalidEmail = [
 ['lucas', 'sem "@" e sem domínio'],

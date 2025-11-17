@@ -1,9 +1,11 @@
 import "dotenv/config";
 import fastify from "fastify";
-import routes from "./routes/index";
+import fastifyRegisters from "./registers/index";
 
-const app = fastify();
-app.register(routes);
+const app = fastify({ logger: false });
+
+// All registers
+await fastifyRegisters(app);
 
 const PORT: number = Number(process.env.PORT) || 3000;
 

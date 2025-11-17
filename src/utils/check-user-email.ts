@@ -6,7 +6,7 @@ type ValidationResult = { valid: boolean; errors: string[] };
  * Returns an object with `valid` and an array of `errors` (Portuguese messages).
  */
 
-export function validateEmail(email: string): ValidationResult {
+function validateEmail(email: string): ValidationResult {
 	const errors: string[] = [];
 	if (typeof email !== 'string') {
 		errors.push('email deve ser string');
