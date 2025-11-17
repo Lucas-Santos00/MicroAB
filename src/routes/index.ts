@@ -1,6 +1,9 @@
-const routes = async (): Promise<void> => {
+import type { FastifyInstance } from "fastify";
+import authRoutes from "./auth-routes";
 
-    console.log('Arquivo index de rotas carregado.');
+const routes = async (app: FastifyInstance): Promise<void> => {
+
+    await app.register(authRoutes, { prefix: '/auth' });
 
 }
 

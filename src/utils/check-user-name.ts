@@ -9,7 +9,7 @@ type ValidationResult = { valid: boolean; errors: string[] };
  * - not a reserved word (admin, user, test)
  */
 
-export function validateUserName(input: unknown): ValidationResult {
+function validateUserName(input: unknown): ValidationResult {
 	const errors: string[] = [];
 
 	if (typeof input !== 'string') {

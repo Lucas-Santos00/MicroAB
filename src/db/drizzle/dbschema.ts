@@ -1,4 +1,5 @@
 import {
+  uuid,
   date,
   integer,
   pgTable,
@@ -33,7 +34,8 @@ export const testeAccounting = pgTable("teste_accounting", {
 });
 
 export const users = pgTable("users", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity().notNull(),
+  id: integer().primaryKey().generatedAlwaysAsIdentity().notNull().unique(),
+  uuid: uuid().notNull().unique(),
   email: text().notNull().unique(),
   username: text().notNull(),
   password_hash: text().notNull(),
@@ -42,12 +44,4 @@ export const users = pgTable("users", {
   pending_Email: text(),
   email_verified: boolean().default(false).notNull(),
   desactivated: boolean().default(false).notNull(),
-});
-
-export const refreshTokens = pgTable("refresh_tokens", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity().notNull(),
-  user_id: integer().notNull().references(() => users.id),
-  token: text().notNull().unique(),
-  expires_at: timestamp().notNull(),
-  created_at: timestamp().defaultNow().notNull(),
 });

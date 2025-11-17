@@ -14,7 +14,8 @@ DATABASE_URL
 REDIS_HOST
 REDIS_USERNAME
 REDIS_PASSWORD
-APP_SECRET
+ACCESS_TOKEN_SECRET
+REFRESH_TOKEN_SECRET
 PORT
 ```
 
@@ -35,50 +36,64 @@ docker run --rm -it \
 
 ```
 src/
-├─ controllers/      # Camada de entrada (HTTP)
+├─ controllers/                # Camada de entrada (HTTP)
 │   └─ UserController.ts
 │       • Recebe req/res do Fastify
 │       • Chama Service
 │       • Retorna JSON e status HTTP
 │       • Ex: registerHandler(req, reply)
 │
-├─ services/         # Regras de negócio
+├─ services/                   # Regras de negócio
 │   └─ UserService.ts
 │       • Orquestra fluxo: chama Repository + Utils
 │       • Aplica validações e regras de negócio
 │       • Ex: register({ username, email, password })
 │
-├─ repositories/     # Acesso ao banco (Drizzle)
+├─ repositories/               # Acesso ao banco (Drizzle)
 │   └─ UserRepository.ts
 │       • Queries CRUD (select, insert, update, delete)
 │       • Retorna dados crus (UserRecord | null)
 │       • Não contém lógica de negócio
-│       • Ex: findByEmail(email), createUser(...)
 │
-├─ entities/         # Objetos de domínio (User, Product, Order)
+├─ entities/                   # Objetos de domínio
 │   └─ User.ts
-│       • Representa um usuário real do sistema
-│       • Pode ter métodos internos: changeUsername, verifyPassword
+│       • Representa um usuário no domínio
+│       • Métodos internos: changeUsername(), verifyPassword()
 │       • Não toca DB nem HTTP
-│       • Ex: class User { id, username, email, passwordHash }
 │
-├─ utils/            # Funções auxiliares
-│   └─ hash.ts, jwt.ts, validation.ts
-│       • Hash de senha, validação de email, geração JWT
-│       • Funções puras reutilizáveis
+├─ utils/                      # Funções auxiliares (puras)
+│   ├─ hash.ts
+│   ├─ jwt.ts
+│   └─ validation.ts
+│       • Hash de senha, geração JWT, validação de dados
 │
-├─ db/               # Configuração do Drizzle + schema
+├─ db/                         # Configuração do banco (Drizzle ORM)
 │   ├─ drizzle.ts
-│   │     • Cria conexão com PostgreSQL ou outro DB
+│   │     • Inicializa conexão com o banco
 │   └─ schema.ts
-│         • Define tabelas usando Drizzle ORM
-│         • Ex: users, products
+│         • Define tabelas e modelos do banco
 │
-└─ types/            # Tipos TypeScript compartilhados
+├─ config/                     # Configurações da aplicação (infra)
+│   ├─ rate-limit-config.ts
+│   │     • Opções de rate limit para rotas específicas
+│   ├─ security.ts
+│   │     • Configurações de segurança (CORS, cookies, headers)
+│   └─ server.ts
+│         • Variáveis de config global do servidor (timeout, logger, trust proxy)
+│
+├─ plugins/                    # Plugins Fastify (infra)
+│   ├─ rate-limit.ts
+│   │     • Registro do plugin de rate-limit (global: false)
+│   ├─ error-handler.ts
+│   │     • Handler de erros global (500)
+│   └─ cookie.ts
+│         • Registro do plugin de cookies
+│
+└─ types/                      # Tipos e DTOs compartilhados
     └─ User.ts
-        • DTOs, tipagem de requisição/response
-        • Ex: CreateUserDTO, UserResponseDTO, UserRecord
-        • Só define estrutura de dados, sem métodos
+        • CreateUserDTO, UserResponseDTO, UserRecord
+        • Tipos puros, sem métodos
+
 ```
 
 ---
