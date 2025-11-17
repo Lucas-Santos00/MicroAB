@@ -1,4 +1,4 @@
-const jsonSchema = {
+const loginJsonSchema = {
     body: {
         type: 'object',
         properties: {
@@ -10,4 +10,4 @@ const jsonSchema = {
     }
 }
 
-export default jsonSchema;
+export default loginJsonSchema;

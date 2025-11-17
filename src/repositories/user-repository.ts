@@ -2,6 +2,7 @@ import { db } from "../db/drizzle/drizzle"
 import { eq } from "drizzle-orm"
 import { users } from "../db/drizzle/dbschema"
 
+// If not necessary, you can remove this type definition
 type UserCredentials = {
     uuid: string
     name: string;
@@ -9,12 +10,12 @@ type UserCredentials = {
     passwordHash: string;
 }
 
-const saveUserCredentials = async (credentials: UserCredentials) => {
+const saveUserCredentials = async (uuid: string, email: string, passwordHash: string, username: string) => {
     return await db.insert(users).values({
-        uuid: credentials.uuid,
-        username: credentials.name,
-        email: credentials.email,
-        password_hash: credentials.passwordHash,
+        uuid: uuid,
+        username: username,
+        email: email,
+        password_hash: passwordHash,
     });
 }
 
