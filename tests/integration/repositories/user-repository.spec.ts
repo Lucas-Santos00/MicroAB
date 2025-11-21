@@ -23,12 +23,7 @@ describe('Test user repository with DataBase', () => {
 
     it('should insert a user', async () => {
 
-        await saveUserCredentials({
-            uuid: mockUser.uuid,
-            name: mockUser.name,
-            email: mockUser.email,
-            passwordHash: mockUser.passwordHash
-        });
+        await saveUserCredentials(mockUser.uuid, mockUser.email, mockUser.passwordHash, mockUser.name);
 
         const [user] = await db.select().from(users).where(eq(users.uuid, mockUser.uuid)).limit(1)
 
