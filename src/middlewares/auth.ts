@@ -6,7 +6,16 @@ import type { LoginCredentials } from "../types/login-credentials";
 import type { RegisterCredentials } from "../types/register-credentials";
 
 const loginCredentialsCheck = async (request: FastifyRequest, reply: FastifyReply) => {
-    const [email, password] = [(request.body as LoginCredentials).email, (request.body as LoginCredentials).password];
+    
+    if (!(request.body as LoginCredentials).email || !(request.body as LoginCredentials).password) {
+        reply.status(400).send({ error: 'Invalid credentials' });
+        return;
+    }
+
+    const [email, password] = [
+        (request.body as LoginCredentials).email,
+        (request.body as LoginCredentials).password
+    ];
 
     if (!validateEmail(email).valid) {
         reply.status(400).send({ error: 'Invalid credentials' });
@@ -21,6 +30,12 @@ const loginCredentialsCheck = async (request: FastifyRequest, reply: FastifyRepl
 }
 
 const registerCredentialsCheck = async (request: FastifyRequest, reply: FastifyReply) => {
+
+    if (!(request.body as RegisterCredentials).email || !(request.body as RegisterCredentials).password || !(request.body as RegisterCredentials).username) {
+        reply.status(400).send({ error: 'Invalid credentials' });
+        return;
+    }
+
     const [email, password, username] = [
         (request.body as RegisterCredentials).email,
         (request.body as RegisterCredentials).password,
