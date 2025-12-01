@@ -34,6 +34,8 @@ const registerService = async (email: string, password: string, username: string
         return { code: 500, error: true, message: 'Internal server error', accessToken: '', refreshToken: '' };
     }
 
+    // Devemos remover do banco o usuário inserido caso haja falha ao salvar os tokens? (Validar)
+
     return {
         code: 201,
         message: 'User registered successfully',

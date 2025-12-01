@@ -1,6 +1,5 @@
 import { FastifyRequest } from "fastify";
 import { loginCredentialsCheck, registerCredentialsCheck } from "../../../src/middlewares/auth";
-import { mock } from "node:test";
 
 describe("Auth Middleware - Check login credentials", () => {
 
