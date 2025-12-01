@@ -24,6 +24,7 @@ const loginService = async (email: string, password: string): Promise<LoginReply
     const {refreshToken, refreshTokenUUID} = generateRefreshToken(user.uuid, user.email);
 
     // Inserir tokens no Redis
+    // Para que inserir no banco? Gerar e retornar direto?
     const savedAcessToken = await saveAccessToken(accessTokenUUID, accessToken);
     const savedRefreshToken = await saveRefreshToken(refreshTokenUUID, refreshToken);
 
