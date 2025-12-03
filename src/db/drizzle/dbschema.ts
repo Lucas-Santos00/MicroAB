@@ -10,17 +10,19 @@ import {
 
 export const projects = pgTable("projects", {
   id: integer().primaryKey().generatedAlwaysAsIdentity().notNull(),
-  project_id: integer().notNull().generatedAlwaysAsIdentity().unique(),
+  name: text("name").notNull(),
+  project_uuid: integer().notNull().generatedAlwaysAsIdentity().unique(),
   created_by: integer().notNull().references(() => users.id),
   api_key: text(),
-  jwt_secret: text(),
+  project_secret_key: text(),
   project_created_at: date().defaultNow().notNull(),
   last_private_key_change: date(),
 });
 
-export const testeAccounting = pgTable("teste_accounting", {
+export const testes = pgTable("teste_accounting", {
   teste_id: integer().primaryKey().generatedAlwaysAsIdentity().notNull(), // chave única e auto increment
-  project_id: integer("project_id").references(() => projects.project_id), // foreign key
+  name: text("name").notNull(),
+  project_id: integer("project_id").references(() => projects.id), // foreign key
   test_description: text("test_description"),
   page_route: text("page_route").notNull(),
   A_event_count: integer("A_event_count").default(0),
