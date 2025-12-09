@@ -103,9 +103,3 @@ src/
 * Cada camada tem responsabilidade única (Clean Architecture).
 * Controllers → Services → Repositories → Database.
 * Entities e Utils são independentes de HTTP ou DB.
-
----
-
-Se quiser, posso fazer uma **versão visual ainda mais estilizada**, com badges, instruções de setup e dicas de desenvolvimento, que deixa o README pronto pra colocar direto no GitHub e parecer profissional.
-
-Quer que eu faça?
