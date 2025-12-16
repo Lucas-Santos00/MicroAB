@@ -11,7 +11,7 @@ import {
 export const projects = pgTable("projects", {
   id: integer().primaryKey().generatedAlwaysAsIdentity().notNull(),
   name: text("name").notNull(),
-  project_uuid: integer().notNull().generatedAlwaysAsIdentity().unique(),
+  project_uuid: uuid().notNull().unique(),
   created_by: integer().notNull().references(() => users.id),
   api_key: text(),
   project_secret_key: text(),
@@ -24,7 +24,7 @@ export const testes = pgTable("teste_accounting", {
   name: text("name").notNull(),
   project_id: integer("project_id").references(() => projects.id), // foreign key
   test_description: text("test_description"),
-  page_route: text("page_route").notNull(),
+  page_url: text("page_route").notNull(),
   A_event_count: integer("A_event_count").default(0),
   B_event_count: integer("B_event_counting").default(0),
   A_generations: integer("A_generations").default(0),

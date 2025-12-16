@@ -1,16 +1,24 @@
+
+const mockInformations = {
+    jwt_secret: "",
+    testeUUID: ""
+}
+
 describe('Generate SDK JWT Key Service', () => {
 
-    // Validar se usuário pagou
-        // Se pagou, não gerar erro
-        // Se não pagou, gerar erro
+    // Validar JWT secret -> JWT sign valido, com payload esperado e parametros esperados (Unit test)
 
-    // Gerrar tipo de teste A/B
-        // Salvar tipo de teste no JWT
-        // Salvar tipo de teste no banco de dados
+    it('should validate a JWT that must contain correctly JWT Payload', () => {
+        // Implementar teste
+    });
 
-    // Validar se chave JWT foi gerada corretamente
-        // payload: projectId, testeType, issuedAt, expiration
-    
-    // Validar se jwt secret é pego corretamente no banco de dados, de acordo com o projectId
+    // Usuário realizou pagamento? (Integration test)
+
+    // gerar JWT key com payload esperado (Integration test)
+
+    // Salvou no banco de dados? (Integration test)
+    // Quais dados foram salvos no banco de dados? (Integration test)
+
+    // Validar retorno do serviço (Integration test)
 
 });
