@@ -21,6 +21,7 @@ export const projects = pgTable("projects", {
 
 export const testes = pgTable("teste_accounting", {
   teste_id: integer().primaryKey().generatedAlwaysAsIdentity().notNull(), // chave única e auto increment
+  uuid: uuid("uuid").notNull().unique(),
   name: text("name").notNull(),
   project_id: integer("project_id").references(() => projects.id), // foreign key
   test_description: text("test_description"),
